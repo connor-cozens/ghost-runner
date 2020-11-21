@@ -55,6 +55,10 @@ app.get('/verify-user', function(req, res){
     })
 })
 
+app.get('/test', function (req, res){
+    res.send("IT WORKS");
+})
+
 
 app.listen(8080, () => {
     console.log('app starting')
