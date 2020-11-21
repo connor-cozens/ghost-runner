@@ -20,7 +20,7 @@ app.get('/', function(req, res){
 app.get('/get-user', function(req, res){
     MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
         var db = client.db('ghost_db');
-        db.collection('users').findOne({}).project({_id: 1}, function (error, result){
+        db.collection('users').findOne({}, {projection: {_id: 1}}, function (error, result){
             res.send(JSON.stringify(result));
         });
         
