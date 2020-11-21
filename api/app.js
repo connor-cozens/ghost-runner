@@ -39,7 +39,7 @@ app.get('/get-user', function(req, res){
 
 app.post('/create-user', function(req, res){
     MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
-        var db = client.db('ghost-db')
+        var db = client.db('ghost_db');
         db.collection('users').insert({username: req.username, password: req.username, age: req.age}, function(error, result){
             res.send(JSON.stringify(result))
         })
@@ -48,8 +48,17 @@ app.post('/create-user', function(req, res){
 
 app.get('/verify-user', function(req, res){
     MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
-        var db = client.db('ghost-db')
+        var db = client.db('ghost_db');
         db.collection('users').findOne({username: req.username, password: req.password}, function(error, result){
+            res.send(JSON.stringify(result))
+        })
+    })
+})
+
+app.get('/get-users', function(req, res){
+    MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
+        var db = client.db('ghost_db');
+        db.collection('users').find({}, function(error, result){
             res.send(JSON.stringify(result))
         })
     })
