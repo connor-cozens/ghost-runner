@@ -1,6 +1,6 @@
 const express = require('express')
 const MongoClient = require('mongodb').MongoClient
-const ObjectId = require('mongodb').ObjectId;
+const ObjectID = require('mongodb').ObjectID;
 var bodyParser = require('body-parser')
 
 
@@ -16,7 +16,7 @@ app.use(express.json())
 app.post('/get-profile-data', function(req, res){
     var data = req.body
     console.log(data)
-    var objectId = ObjectId(data.objectID);
+    var objectId = new ObjectID(data.objectId)
     console.log(objectId);
     MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
         var db = client.db('ghost_db');
