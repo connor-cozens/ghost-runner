@@ -1,6 +1,7 @@
 import * as React from 'react';
 import MapView from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions, Button } from 'react-native';
+import { GoogleMap, DistanceMatrixService } from "@react-google-maps/api";
 
 import * as Location from 'expo-location'
 import ProgressBar from './../../components/ProgressBar.js';
@@ -16,8 +17,8 @@ export default class MapScreen extends React.Component {
       PLAYER_ORIGIN: 0,
       PLAYER_DESTINATION: 0,
       GHOST_ORIGIN: 0,
-      GHOST_DESTINATION: 0,
-      PLAYER_PROGRESS: 0,
+      GHOST_DESTINATION: 40,
+      PLAYER_PROGRESS: 20,
       GHOST_PROGRESS: 0,
       PLAYER_DISTANCES: [],
       GHOST_DISTANCES: []
@@ -32,7 +33,14 @@ export default class MapScreen extends React.Component {
         long: location["coords"]["longitude"]
       });
     });
-
+    url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=-42.98269275707433, -81.24368352867425&destinations=42.97631742102314, -81.24206316007997&key=AIzaSyD8LiaQi4w3UySiDfi_38xpGvJ2iqFv7Hk";
+    fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+    });
   }
 
   render() {
@@ -68,47 +76,72 @@ export default class MapScreen extends React.Component {
       </Text>
       {/* Player Progress Bar */}
       <View style={styles.progress1}>
-        <ProgressBar progress={this.PLAYER_PROGRESS}/>
+        <ProgressBar progress={this.state.PLAYER_PROGRESS}/>
       </View>
       {/* Ghost Progress Bar */}
       <View style={styles.progress2}>
-        <ProgressBar progress={this.GHOST_PROGRESS}/>
+        <ProgressBar progress={this.state.GHOST_PROGRESS}/>
       </View>
     </View>
     )
   }
 
-  componentDidMount() {
-    // this.interval = setInterval(() => 
-    //   // Calculate player's distance travelled
-    //   player_distance = require('google-distance'),
-    //   player_distance.get(
-    //     {
-    //       origin:       this.PLAYER_ORIGIN,
-    //       destination:  this.PLAYER_DESTINATION
-    //     },
-    //     function(err, data) {
-    //       if (err) return console.log(err);
-    //       console.log(data);
-    //     }
-    //   ),
-    //   this.PLAYER_DISTANCES.push(player_distance),
-    //   // Calculate ghost's distance travelled
-    //   ghost_distance = require('google-distance'),
-    //   ghost_distance.get(
-    //     {
-    //       origin:       this.GHOST_ORIGIN,
-    //       destination:  this.GHOST_DESTINATION
-    //     },
-    //     function(err, data) {
-    //       if (err) return console.log(err);
-    //       console.log(data);
-    //     }
-    //   ),
-    //   this.GHOST_DISTANCES.push(ghost_distance),
-    //   this.setState({PLAYER_PROGRESS: (PLAYER_PROGRESS + 1)}),
-    //   this.updatePlayerBar(this.PLAYER_PROGRESS, 500), 20000);
+  restRequest() {
+    url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=-49.98491666389771,-81.24528725322716&destinations=-49.6905615%2C-81.9976592&key=AIzaSyD8LiaQi4w3UySiDfi_38xpGvJ2iqFv7Hk";
+    fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+    });
+    
+    // const origin = {lat: -49.98491666389771, lng: -81.24528725322716}
+    // const destination = {lat: -50, lng: -81}
+
+    // service = new google.maps.DistanceMatrixService();
+    // <DistanceMatrixService
+    // options=
+    //   {{
+    //     destinations: [origin],
+    //     origins: [destination],
+    //     travelMode: "WALKING",
+    //   }}
+    // callback = {(response) => {console.log(response)}}
+    // />
   }
+
+  // componentDidMount() {
+  //   this.interval = setInterval(() => 
+  //     // Calculate player's distance travelled
+  //     player_distance = require('google-distance'),
+  //     player_distance.get(
+  //       {
+  //         origin:       this.PLAYER_ORIGIN,
+  //         destination:  this.PLAYER_DESTINATION
+  //       },
+  //       function(err, data) {
+  //         if (err) return console.log(err);
+  //         console.log(data);
+  //       }
+  //     ),
+  //     this.PLAYER_DISTANCES.push(player_distance),
+  //     // Calculate ghost's distance travelled
+  //     ghost_distance = require('google-distance'),
+  //     ghost_distance.get(
+  //       {
+  //         origin:       this.GHOST_ORIGIN,
+  //         destination:  this.GHOST_DESTINATION
+  //       },
+  //       function(err, data) {
+  //         if (err) return console.log(err);
+  //         console.log(data);
+  //       }
+  //     ),
+  //     this.GHOST_DISTANCES.push(ghost_distance),
+  //     this.setState({PLAYER_PROGRESS: (PLAYER_PROGRESS + 1)}),
+  //     this.updatePlayerBar(this.PLAYER_PROGRESS, 500), 20000);
+  // }
 
   componentWillUnmount() {
     clearInterval(this.interval);

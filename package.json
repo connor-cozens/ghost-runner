@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^10.0.0",
+    "@react-google-maps/api": "^1.13.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.8.0",
     "@react-navigation/native": "^5.7.3",
@@ -23,15 +24,17 @@
     "expo-constants": "~9.2.0",
     "expo-font": "~8.3.0",
     "expo-linking": "^1.0.1",
+    "expo-location": "~9.0.0",
     "expo-progress": "0.0.2",
     "expo-splash-screen": "~0.6.2",
     "expo-status-bar": "~1.0.2",
     "expo-web-browser": "~8.5.0",
-    "prop-types": "^15.7.2",
     "express": "^4.17.1",
+    "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-bootstrap": "^1.4.0",
     "react-dom": "16.13.1",
+    "react-google-maps": "^9.4.5",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
     "react-native-air-progress-bar": "0.0.5",
     "react-native-geolocation-service": "^5.0.0",
@@ -45,8 +48,7 @@
     "react-native-screens": "~2.10.1",
     "react-native-svg": "12.1.0",
     "react-native-vector-icons": "^7.1.0",
-    "react-native-web": "~0.13.12",
-    "expo-location": "~9.0.0"
+    "react-native-web": "~0.13.12"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
