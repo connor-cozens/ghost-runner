@@ -2,6 +2,7 @@ const express = require('express')
 const MongoClient = require('mongodb').MongoClient
 const ObjectID = require('mongodb').ObjectID;
 var bodyParser = require('body-parser')
+const https = require('https');
 
 
 const app = express()
@@ -60,6 +61,4 @@ app.get('/test', function (req, res){
 })
 
 
-app.listen(8080, () => {
-    console.log('app starting')
-})
+https.createServer(app).listen(8080);
