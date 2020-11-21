@@ -1,30 +1,93 @@
 import * as React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { StyleSheet, TextInput, View, TouchableOpacity, Text } from 'react-native';
 
-export default class GhostPickerScreen extends React.Component {
+export default class LoginScreen extends React.Component {
+    state = {
+        email: "",
+        password: ""
+    }
     render() {
         return (
-            <View style={styles.container}>
-            <Text style={styles.title}>Tab Two</Text>
-            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-            </View>
-            )
-        }
+            <View style={styles.container} >
+                <Text style={styles.logo}>Ghost Runner</Text>
+
+                <View style={styles.inputView} >
+                    <TextInput
+                        style={styles.inputText}
+                        placeholder="Username"
+                        placeholderTextColor="#003f5c"
+                        onChangeText={text => this.setState({ email: text })} />
+                </View>
+                <View style={styles.inputView} >
+                    <TextInput secureTextEntry={true}
+                        style={styles.inputText}
+                        placeholder="Password"
+                        placeholderTextColor="#003f5c"
+                        onChangeText={text => this.setState({ password: text })} />
+                </View>
+                <TouchableOpacity style={styles.loginBtn}>
+                    <Text style={styles.login}>LOGIN</Text>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <Text style={styles.signup}>Signup</Text>
+                </TouchableOpacity>
+
+            </View >
+        );
     }
+}
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 20,
     },
-    title: {
-      fontSize: 20,
-      fontWeight: 'bold',
+
+    logo: {
+        fontWeight: "bold",
+        fontSize: 50,
+        color: "#fb5b5a",
+        marginBottom: 40
     },
-    separator: {
-      marginVertical: 30,
-      height: 1,
-      width: '80%',
+
+    inputView: {
+        width: "80%",
+        backgroundColor: "#465881",
+        borderRadius: 25,
+        height: 50,
+        marginBottom: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20
     },
-  });
+
+    inputText: {
+        height: 50,
+        color: "white"
+    },
+
+    login: {
+        color: "white",
+        fontSize: 11
+    },
+
+    signup: {
+        color: "#465881",
+        fontSize: 11
+    },
+
+    loginBtn: {
+        width: "80%",
+        backgroundColor: "#fb5b5a",
+        borderRadius: 25,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 40,
+        marginBottom: 10
+    },
+});
+
+
