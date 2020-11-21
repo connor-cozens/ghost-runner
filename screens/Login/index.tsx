@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, TextInput, View, TouchableOpacity, Text } from 'react-native';
 
-export default class App extends React.Component {
+export default class LoginScreen extends React.Component {
     state = {
         email: "",
         password: ""

@@ -5,8 +5,8 @@ import * as React from 'react';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/map';
-import TabTwoScreen from '../screens/ghost_tracker';
+import TabOneScreen from '../screens/temp/map';
+import TabTwoScreen from '../screens/temp/ghost_tracker';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
