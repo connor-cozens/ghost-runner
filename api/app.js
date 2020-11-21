@@ -17,6 +17,7 @@ app.get('/get-user', function(req, res){
 });
 
 app.post('/put-something', function(req, res){
+    console.log(req);
     const data = req.body;
     console.log(data);
     res.send(JSON.stringify(data));
