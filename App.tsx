@@ -1,23 +1,52 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+// Import Packages
+import React, { Component } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator, StackScreenProps } from '@react-navigation/stack';
+import Animated from 'react-native-reanimated';
 
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
+// Import Individual pages as Objects
+import MapScreen from './screens/Map';
+import GhostPickerScreen from './screens/Ghost_Picker';
+import LoginScreen from './screens/Login';
+import ProfileScreen from './screens/Profile';
+// import LandingScreen from './screens/Landing_Page';
 
-export default function App() {
-  const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
+// Stack Navigation Control
+const RootStack = createStackNavigator();
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
-    return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
-      </SafeAreaProvider>
-    );
+// App Navigation Control
+export default class App extends Component {
+  //
+  constructor(props) {
+    super(props);
+    this.state = {
+      sliding_animation: new Animated.Value(0),
+    }
   }
+
+  //
+  render() {
+    return (
+      <NavigationContainer>
+        <RootStack.Navigator>
+          {/* <RootStack.Screen name = "Landing" component = {LandingScreen} /> */}
+          <RootStack.Screen name = "Map"      component = {MapScreen} />
+          <RootStack.Screen name = "Ghost"    component = {GhostPickerScreen} />
+          <RootStack.Screen name = "Login"    component = {LoginScreen} />
+          <RootStack.Screen name = "Profile"  component = {ProfileScreen} />
+        </RootStack.Navigator>
+      </NavigationContainer>
+    );
+  };
 }
+// const App = () => {
+//   return (
+//     <NavigationContainer>
+//       <RootStack.Navigator>
+//         {/* <RootStack.Screen name = "Landing" component = {LandingScreen} /> */}
+//         <RootStack.Screen name = "Map" component = {MapScreen} />
+//         <RootStack.Screen name = "Ghost" component = {GhostPickerScreen} />
+//       </RootStack.Navigator>
+//     </NavigationContainer>
+//   );
+// };
