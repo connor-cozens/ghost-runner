@@ -1,5 +1,14 @@
 const express = require('express')
 const MongoClient = require('mongodb').MongoClient
+
+var bodyParser = require('body-parser')
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
+
+app.use(express.json())
+
 const app = express()
 
 app.get('/', function(req, res){
@@ -17,7 +26,6 @@ app.get('/get-user', function(req, res){
 });
 
 app.post('/put-something', function(req, res){
-    console.log(req);
     const data = req.body;
     console.log(data);
     res.send(JSON.stringify(data));
