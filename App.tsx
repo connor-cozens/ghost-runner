@@ -39,14 +39,3 @@ export default class App extends Component {
     );
   };
 }
-// const App = () => {
-//   return (
-//     <NavigationContainer>
-//       <RootStack.Navigator>
-//         {/* <RootStack.Screen name = "Landing" component = {LandingScreen} /> */}
-//         <RootStack.Screen name = "Map" component = {MapScreen} />
-//         <RootStack.Screen name = "Ghost" component = {GhostPickerScreen} />
-//       </RootStack.Navigator>
-//     </NavigationContainer>
-//   );
-// };
