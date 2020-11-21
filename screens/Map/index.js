@@ -1,33 +1,47 @@
 import * as React from 'react';
 import MapView from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions, Button } from 'react-native';
+
+import * as Location from 'expo-location'
 import ProgressBar from './../../components/ProgressBar.js';
-import { render } from 'react-dom';
+
 export default class MapScreen extends React.Component {
-    constructor({ navigation }){
-      super()
-      this.navigation = navigation;
-      this.state = {
-        lat: 42.98491666389771,
-        long: -81.24528725322716,
-        PLAYER_ORIGIN: 0,
-        PLAYER_DESTINATION: 0,
-        GHOST_ORIGIN: 0,
-        GHOST_DESTINATION: 0,
-        PLAYER_PROGRESS: 0,
-        GHOST_PROGRESS: 0,
-        PLAYER_DISTANCES: [],
-        GHOST_DISTANCES: []
-      }
+  constructor({ navigation }){
+    super()
+    this.navigation = navigation;
+
+    this.state = {
+      lat: -49.98491666389771,
+      long: -81.24528725322716,
+      PLAYER_ORIGIN: 0,
+      PLAYER_DESTINATION: 0,
+      GHOST_ORIGIN: 0,
+      GHOST_DESTINATION: 0,
+      PLAYER_PROGRESS: 0,
+      GHOST_PROGRESS: 0,
+      PLAYER_DISTANCES: [],
+      GHOST_DISTANCES: []
     }
-    render() {
+  }
+
+  componentDidMount(){
+    Location.getCurrentPositionAsync()
+    .then((location) => {
+      this.setState({
+        lat: location["coords"]["latitude"],
+        long: location["coords"]["longitude"]
+      });
+    });
+  }
+
+  render() {
     return (
     <View style={styles.container}>
       {/* Map Object */}
       <MapView
-        initialRegion={{
-          latitude: 42.98491666389771,
-          longitude: -81.24528725322716,
+        region={{
+          latitude: this.state.lat,
+          longitude: this.state.long,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
