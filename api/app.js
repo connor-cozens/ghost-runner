@@ -7,11 +7,10 @@ app.get('/', function(req, res){
 })
 
 app.get('/get-user', function(req, res){
-    MongoClient.connect("mongodb://127.0.0.1:27017/ghost_db", function(error, db){
-        db.collection('users', function (err, collection){
-            collection.find().toArray(function (err, items){
-                res.send(JSON.stringify(items));
-            });
+    MongoClient.connect("mongodb://127.0.0.1:27017", function(error, db){
+        var db = client.db('ghost_db');
+        db.collection('users').findOne({}, function (error, result){
+            res.send(JSON.stringify(result));
         });
         
     });
