@@ -175,7 +175,7 @@ export default class MapScreen extends React.Component {
       
       </MapView>       
       {/* User Map Icon  */}
-      <Image source={require("./../../assets/images/adaptive-icon.png")}/>
+      {/* <Image source={require("./../../assets/images/adaptive-icon.png")}/> */}
       {/* Menu Item 1 */}
       <Text 
         onPress = { () => this.navigation.navigate('Ghost')} 
