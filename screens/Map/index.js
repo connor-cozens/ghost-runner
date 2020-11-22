@@ -51,6 +51,24 @@ export default class MapScreen extends React.Component {
     this.forceUpdate();
   }
   componentDidMount(){
+    Location.getCurrentPositionAsync({accuracy: Location.Accuracy.BestForNavigation})
+        .then((location) => {
+          this.setState({
+            lat: location["coords"]["latitude"],
+            long: location["coords"]["longitude"],
+          })
+        }),
+    //
+    this.state.flag_interval = setInterval(() => {
+      // console.log(global.race_on)
+      if (global.race_on == true) {
+        clearInterval(this.state.flag_interval)
+        this.startRace()
+      }
+    })
+  }
+
+  startRace() {
     // Center map on user at app startup
     Location.getCurrentPositionAsync({accuracy: Location.Accuracy.BestForNavigation})
         .then((location) => {
@@ -123,14 +141,14 @@ export default class MapScreen extends React.Component {
           })
         })
       // Create URL to push based on origin and destination times
-      url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="+
+      this.state.url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="+
       this.state.PLAYER_ORIGIN_LAT        + ", " +
       this.state.PLAYER_ORIGIN_LONG       + "&destinations=" +
       this.state.PLAYER_DESTINATION_LAT   + ", "+
       this.state.PLAYER_DESTINATION_LONG  + "&mode=walking&key=AIzaSyD8LiaQi4w3UySiDfi_38xpGvJ2iqFv7Hk";
       // console.log("URL is: ", url)
       // Retrieve the distance from the google servers
-      fetch(url)
+      fetch(this.state.url)
         .then((response) => {
           return response.json();
         })
@@ -150,14 +168,14 @@ export default class MapScreen extends React.Component {
       this.setState({
         PLAYER_DISTANCE: parseInt(parseInt(this.state.PLAYER_DISTANCE) + parseInt(this.state.PLAYER_CURRENT_DISTANCE) + 500),
       })
-      console.log("Player Distance is now: ", this.state.PLAYER_DISTANCE)
+      // console.log("Player Distance is now: ", this.state.PLAYER_DISTANCE)
       this.state.PLAYER_DISTANCES.push(this.state.PLAYER_DISTANCE)
-      console.log("Player Distances is now: ", this.state.PLAYER_DISTANCES)
+      // console.log("Player Distances is now: ", this.state.PLAYER_DISTANCES)
       const ghost_index = this.state.TIME_ELAPSED / 20
       this.state.GHOST_DISTANCE = this.state.GHOST_DISTANCES[ghost_index]
 
       this.state.PLAYER_PROGRESS = parseInt((this.state.PLAYER_DISTANCE / this.state.RACE_LENGTH) * 100)
-      console.log("Player Progress Value is now: ", this.state.PLAYER_PROGRESS)
+      // console.log("Player Progress Value is now: ", this.state.PLAYER_PROGRESS)
       this.state.GHOST_PROGRESS = parseInt((this.state.GHOST_DISTANCE / this.state.RACE_LENGTH) * 100)
 
       if (this.state.GHOST_DISTANCE < this.state.PLAYER_DISTANCE) {

@@ -21,6 +21,7 @@ const RootStack = createStackNavigator();
 export default class App extends Component {
   //
   constructor(props) {
+    global.race_on = false;
     super(props);
     this.state = {
       sliding_animation: new Animated.Value(0),
