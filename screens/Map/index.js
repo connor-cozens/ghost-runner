@@ -157,28 +157,29 @@ export default class MapScreen extends React.Component {
           longitudeDelta: 0.0421,
         }}
         style={styles.mapStyle}
-      />        
+      />  
+
       {/* Menu Item 1 */}
-        <TouchableOpacity><Text 
-          onPress = { () => this.navigation.navigate('Ghost')} 
-          style={styles.ghost}
+        <Text 
+           style={styles.ghost}
+           onPress = { () => this.navigation.navigate('Ghost')}
           >Ghost
-        </Text></TouchableOpacity>
+        </Text>
       {/* Menu Item 2 */}
       {global.signedIn ? (null) : 
-      (<TouchableOpacity><Text 
+      (<Text 
         onPress = { () => this.navigation.navigate('Login')} 
         style={styles.login}
         >Login
-      </Text></TouchableOpacity>)}
+      </Text>)}
       {/* Menu Item 3 */}
       { global.signedIn ?
-      (<TouchableOpacity><Text 
+      (<Text 
         onPress = { () => this.navigation.navigate('Profile')} 
         style={styles.profile}
         >Profile
       </Text>
-      </TouchableOpacity>) : (null)}
+      ) : (null)}
       {/* Player Progress Bar */}
       <View style={styles.progress1}>
         <ProgressBar icon="run" progress={this.state.PLAYER_PROGRESS}/>
@@ -195,7 +196,7 @@ export default class MapScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -207,21 +208,30 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 50,
     fontWeight: 'bold',
-    paddingLeft: 300,
+    left: 340,
+    flexDirection: 'row',
+    padding: 5,
+    backgroundColor: "#fb5b5a",
+    borderRadius: 5,
+    color: 'white'
   },
   login: {
     position: "absolute",
     bottom: 100,
     fontWeight: 'bold',
-    paddingLeft: 300,
-    backgroundColor: "#465881"
+    left: 340,
+    flexDirection: 'row',
+    padding: 5,
+    backgroundColor: "#fb5b5a",
+    borderRadius: 5,
+    color: 'white'
   },
   profile: {
     position: "absolute",
     bottom: 150,
     fontWeight: 'bold',
     paddingLeft: 300,
-    backgroundColor: "#465881"
+    backgroundColor: "#fb5b5a"
   },
   GhostPickerButton: {
     position: "absolute",
