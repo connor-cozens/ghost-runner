@@ -166,7 +166,7 @@ export default class MapScreen extends React.Component {
           
       // Calculate the player's new travelled distance at the current point
       this.setState({
-        PLAYER_DISTANCE: parseInt(parseInt(this.state.PLAYER_DISTANCE) + parseInt(this.state.PLAYER_CURRENT_DISTANCE)),
+        PLAYER_DISTANCE: parseInt(parseInt(this.state.PLAYER_DISTANCE) + parseInt(this.state.PLAYER_CURRENT_DISTANCE) + 150),
       })
       // console.log("Player Distance is now: ", this.state.PLAYER_DISTANCE)
       this.state.PLAYER_DISTANCES.push(this.state.PLAYER_DISTANCE)
