@@ -30,6 +30,7 @@ export default class LoginScreen extends React.Component<{}, {username: string, 
                 if (json.signedIn == true){
                     global.signedIn = true;
                     global.oid = json._id;
+                    global.handleOnNavigationBack()
                     global.navigation.navigate('Map');
                 } else{
                     Alert.alert("Login Invalid, Please Try Again");

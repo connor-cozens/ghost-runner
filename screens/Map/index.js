@@ -11,6 +11,12 @@ export default class MapScreen extends React.Component {
     super()
     this.navigation = navigation;
     global.navigation = navigation;
+    this.navigation.addListener('willFocus', () => {
+      console.log('activated');
+      this.forceUpdate();
+    });
+    this.handleOnNavigationBack = this.handleOnNavigationBack.bind(this);
+    global.handleOnNavigationBack = this.handleOnNavigationBack
 
     this.state = {
       lat: -49.98491666389771,
@@ -35,7 +41,9 @@ export default class MapScreen extends React.Component {
       PLAYER_HIGHEST_10K: 0,
     }
   }
-
+  handleOnNavigationBack(){
+    this.forceUpdate();
+  }
   componentDidMount(){
     // Center map on user at app startup
     Location.getCurrentPositionAsync({accuracy: Location.Accuracy.BestForNavigation})
@@ -167,8 +175,8 @@ export default class MapScreen extends React.Component {
         region={{
           latitude: this.state.lat,
           longitude: this.state.long,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
         }}
         style={styles.mapStyle}
       >
@@ -205,6 +213,14 @@ export default class MapScreen extends React.Component {
       <View style={styles.progress2}>
         <ProgressBar icon="ghost" progress={this.state.GHOST_PROGRESS}/>
       </View>
+      <Text 
+        style={styles.distanceDisplay}
+        > Distance Travelled: { this.state.PLAYER_DISTANCE }
+      </Text>
+      <Text 
+        style={styles.timeDisplay}
+        > Time Elapsed { this.state.TIME_ELAPSED }
+      </Text>
     </View>
     )
   }
@@ -251,5 +267,18 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 40,
     // color: "black"
+  },
+  distanceDisplay: {
+    position: "absolute",
+    bottom: 150,
+    left: 5,
+    fontWeight: 'bold'
+  },
+  timeDisplay: {
+    position: "absolute",
+    bottom: 165,
+    left: 5,
+    fontWeight: 'bold'
   }
+
 });
