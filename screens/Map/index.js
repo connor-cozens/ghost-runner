@@ -1,7 +1,7 @@
 import * as React from 'react';
 import MapView from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions, Button } from 'react-native';
-import { GoogleMap, DistanceMatrixService } from "@react-google-maps/api";
+import { StyleSheet, Text, View, Dimensions, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import * as Location from 'expo-location'
 import ProgressBar from './../../components/ProgressBar.js';
@@ -35,8 +35,10 @@ export default class MapScreen extends React.Component {
       GHOST_PROGRESS: 0,
       PLAYER_DISTANCES: [],
       GHOST_DISTANCES: [],
-      RACE_LENGTH: 2000
-
+      RACE_LENGTH: 2000,
+      PLAYER_HIGHEST_2K: 0,
+      PLAYER_HIGHEST_5K: 0,
+      PLAYER_HIGHEST_10K: 0,
     }
   }
   handleOnNavigationBack(){
@@ -144,6 +146,19 @@ export default class MapScreen extends React.Component {
       if (this.state.PLAYER_DISTANCE >= this.state.RACE_LENGTH) {
         clearInterval(this.state.interval)
         console.log("You finished your run, good job!!")
+        average_speed = (this.state.PLAYER_DISTANCES[-1] / this.state.TIME_ELAPSED)
+        if (this.state.RACE_LENGTH == 2000 && average_speed > this.state.PLAYER_HIGHEST_2K) {
+            this.state.PLAYER_HIGHEST_2K = average_speed
+        }
+        // 
+        else if (this.state.RACE_LENGTH == 5000 && average_speed > this.state.PLAYER_HIGHEST_5K) {
+          this.state.PLAYER_HIGHEST_5K = average_speed
+        }
+        // 
+        else if (this.state.RACE_LENGTH == 10000 && average_speed > this.state.PLAYER_HIGHEST_10K) {
+          this.state.PLAYER_HIGHEST_10K = average_speed
+        }
+        // POST ALL USER INFO HERE BACK TO THE DATABASE
       }
     }, 20000);
   }
@@ -164,7 +179,11 @@ export default class MapScreen extends React.Component {
           longitudeDelta: 0.01,
         }}
         style={styles.mapStyle}
-      />        
+      >
+      
+      </MapView>       
+      {/* User Map Icon  */}
+      <Image source={require("./../../assets/images/adaptive-icon.png")}/>
       {/* Menu Item 1 */}
       <Text 
         onPress = { () => this.navigation.navigate('Ghost')} 
