@@ -171,28 +171,28 @@ export default class MapScreen extends React.Component {
         clearInterval(this.state.interval)
         console.log("You finished your run, good job!!")
         // 
-        this.state.average_speed = (this.state.PLAYER_DISTANCES[-1] / this.state.TIME_ELAPSED)
-        if (this.state.RACE_LENGTH == 2000 && average_speed > this.state.PLAYER_HIGHEST_2K) {
+        this.state.average_speed = (this.state.PLAYER_DISTANCES[this.state.PLAYER_DISTANCES.length - 1] / this.state.TIME_ELAPSED)
+        if (this.state.RACE_LENGTH == 2000 && this.state.average_speed > this.state.PLAYER_HIGHEST_2K) {
             this.state.PLAYER_HIGHEST_2K = this.state.average_speed
         }
         // 
-        else if (this.state.RACE_LENGTH == 5000 && average_speed > this.state.PLAYER_HIGHEST_5K) {
+        else if (this.state.RACE_LENGTH == 5000 && this.state.average_speed > this.state.PLAYER_HIGHEST_5K) {
           this.state.PLAYER_HIGHEST_5K = this.state.average_speed
         }
         // 
-        else if (this.state.RACE_LENGTH == 10000 && average_speed > this.state.PLAYER_HIGHEST_10K) {
+        else if (this.state.RACE_LENGTH == 10000 && this.state.average_speed > this.state.PLAYER_HIGHEST_10K) {
           this.state.PLAYER_HIGHEST_10K = this.state.average_speed
         }
         // POST ALL USER INFO HERE BACK TO THE DATABASE
-        race = 0
+        this.state.race = 0
         if (this.state.RACE_LENGTH == 2000) {
-          race = 2
+          this.state.race = 2
         }
         else if (this.state.RACE_LENGTH == 5000) {
-          race = 5
+          this.state.race = 5
         }
         else if (this.state.RACE_LENGTH == 10000) {
-          race = 10
+          this.state.race = 10
         }
         fetch("https://ghost.ryandavis.tech:8080/upload-run", {
             method: 'POST',
@@ -202,7 +202,7 @@ export default class MapScreen extends React.Component {
             },
             body: JSON.stringify({
               "oid": this.state.PLAYER_ID,
-              "field_name": ("best_" + race + "k"),
+              "field_name": ("best_" + this.state.race + "k"),
               "avg": this.state.average_speed,
               "run": this.state.PLAYER_DISTANCES
             })
