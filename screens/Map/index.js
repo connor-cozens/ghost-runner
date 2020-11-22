@@ -40,6 +40,9 @@ export default class MapScreen extends React.Component {
       PLAYER_HIGHEST_2K: 0,
       PLAYER_HIGHEST_5K: 0,
       PLAYER_HIGHEST_10K: 0,
+      average_speed = 0,
+      GHOST_ID: "5fb94e5945f3e966b61e515d",
+      PLAYER_ID: global.iod
     }
   }
   handleOnNavigationBack(){
@@ -54,6 +57,29 @@ export default class MapScreen extends React.Component {
             long: location["coords"]["longitude"],
           })
         }),
+    // Get Profile Data
+    fetch("https://ghost.ryandavis.tech:8080/get-profile-data", {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              "oid": this.state.GHOST_ID
+            })
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              console.log("Data" + data)
+              this.setState({
+                PLAYER_HIGHEST_2K: (data.best_2k),
+                PLAYER_HIGHEST_5K: data.best_5k,
+                PLAYER_HIGHEST_10K: data.best_10k,
+                PLAYER_ID: data._id
+              })
+            }),
     // Get the ghost data for the ghost you're racing
     fetch("https://ghost.ryandavis.tech:8080/get-ghost-run", {
             method: 'POST',
@@ -62,7 +88,7 @@ export default class MapScreen extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              "oid": "5fb94e5945f3e966b61e515d"
+              "oid": this.state.GHOST_ID
             })
           })
             .then((response) => {
@@ -92,76 +118,104 @@ export default class MapScreen extends React.Component {
             long: location["coords"]["longitude"],
             PLAYER_DESTINATION_LONG: location["coords"]["longitude"],
             PLAYER_DESTINATION_LAT: location["coords"]["latitude"]
-          });
-          // Create URL to push based on origin and destination times
-          url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="+
-            this.state.PLAYER_ORIGIN_LAT        + ", " +
-            this.state.PLAYER_ORIGIN_LONG       + "&destinations=" +
-            this.state.PLAYER_DESTINATION_LAT   + ", "+
-            this.state.PLAYER_DESTINATION_LONG  + "&mode=walking&key=AIzaSyD8LiaQi4w3UySiDfi_38xpGvJ2iqFv7Hk";
-          // console.log("URL is: ", url)
-          // Retrieve the distance from the google servers
-          fetch(url)
+          })
+        })
+      // Create URL to push based on origin and destination times
+      url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="+
+      this.state.PLAYER_ORIGIN_LAT        + ", " +
+      this.state.PLAYER_ORIGIN_LONG       + "&destinations=" +
+      this.state.PLAYER_DESTINATION_LAT   + ", "+
+      this.state.PLAYER_DESTINATION_LONG  + "&mode=walking&key=AIzaSyD8LiaQi4w3UySiDfi_38xpGvJ2iqFv7Hk";
+      // console.log("URL is: ", url)
+      // Retrieve the distance from the google servers
+      fetch(url)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (this.state.TIME_ELAPSED == 20) {
+            const distance = 0
+          }
+          else {
+            const distance = data.rows[0].elements[0].distance.text.split(' ')[0]
+            this.setState({
+              PLAYER_CURRENT_DISTANCE: distance,
+            })
+          }
+        })
+          
+      // Calculate the player's new travelled distance at the current point
+      this.setState({
+        PLAYER_DISTANCE: parseInt(parseInt(this.state.PLAYER_DISTANCE) + parseInt(this.state.PLAYER_CURRENT_DISTANCE) + 500),
+      })
+      // console.log("Player Distance is now: ", this.state.PLAYER_DISTANCE)
+      this.state.PLAYER_DISTANCES.push(this.state.PLAYER_DISTANCE)
+      // console.log("Player Distances is now: ", this.state.PLAYER_DISTANCES)
+      const ghost_index = this.state.TIME_ELAPSED / 20
+      this.state.GHOST_DISTANCE = this.state.GHOST_DISTANCES[ghost_index]
+
+      this.state.PLAYER_PROGRESS = parseInt((this.state.PLAYER_DISTANCE / this.state.RACE_LENGTH) * 100)
+      this.state.GHOST_PROGRESS = parseInt((this.state.GHOST_DISTANCE / this.state.RACE_LENGTH) * 100)
+
+      if (this.state.GHOST_DISTANCE < this.state.PLAYER_DISTANCE) {
+        console.log("You're ahead of the ghost, keep up the pace!")
+      }
+      //
+      else if (this.state.GHOST_DISTANCE == this.state.PLAYER_DISTANCE) {
+        console.log("You're tied with the ghost, time to pick up the pace!")
+      }
+      //
+      else {
+        console.log("You're behind the ghost, what a spooooooky place to be!")
+      }
+      if (this.state.PLAYER_DISTANCE >= this.state.RACE_LENGTH) {
+        clearInterval(this.state.interval)
+        console.log("You finished your run, good job!!")
+        // 
+        this.state.average_speed = (this.state.PLAYER_DISTANCES[-1] / this.state.TIME_ELAPSED)
+        if (this.state.RACE_LENGTH == 2000 && average_speed > this.state.PLAYER_HIGHEST_2K) {
+            this.state.PLAYER_HIGHEST_2K = this.state.average_speed
+        }
+        // 
+        else if (this.state.RACE_LENGTH == 5000 && average_speed > this.state.PLAYER_HIGHEST_5K) {
+          this.state.PLAYER_HIGHEST_5K = this.state.average_speed
+        }
+        // 
+        else if (this.state.RACE_LENGTH == 10000 && average_speed > this.state.PLAYER_HIGHEST_10K) {
+          this.state.PLAYER_HIGHEST_10K = this.state.average_speed
+        }
+        // POST ALL USER INFO HERE BACK TO THE DATABASE
+        race = 0
+        if (this.state.RACE_LENGTH == 2000) {
+          race = 2
+        }
+        else if (this.state.RACE_LENGTH == 5000) {
+          race = 5
+        }
+        else if (this.state.RACE_LENGTH == 10000) {
+          race = 10
+        }
+        fetch("https://ghost.ryandavis.tech:8080/upload-run", {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              "oid": this.state.PLAYER_ID,
+              "field_name": ("best_" + race + "k"),
+              "avg": this.state.average_speed,
+              "run": this.state.PLAYER_DISTANCES
+            })
+          })
             .then((response) => {
               return response.json();
             })
             .then((data) => {
-              if (this.state.TIME_ELAPSED == 20) {
-                const distance = 0
-              }
-              else {
-                const distance = data.rows[0].elements[0].distance.text.split(' ')[0]
-                this.setState({
-                  PLAYER_CURRENT_DISTANCE: distance,
-                })
-              }
-            });
-          
-          // Calculate the player's new travelled distance at the current point
-          this.setState({
-            PLAYER_DISTANCE: parseInt(parseInt(this.state.PLAYER_DISTANCE) + parseInt(this.state.PLAYER_CURRENT_DISTANCE) + 500),
-          })
-          // console.log("Player Distance is now: ", this.state.PLAYER_DISTANCE)
-          this.state.PLAYER_DISTANCES.push(this.state.PLAYER_DISTANCE)
-          // console.log("Player Distances is now: ", this.state.PLAYER_DISTANCES)
-          
-          const ghost_index = this.state.TIME_ELAPSED / 20
-          this.state.GHOST_DISTANCE = this.state.GHOST_DISTANCES[ghost_index]
-
-          this.state.PLAYER_PROGRESS = parseInt((this.state.PLAYER_DISTANCE / this.state.RACE_LENGTH) * 100)
-          this.state.GHOST_PROGRESS = parseInt((this.state.GHOST_DISTANCE / this.state.RACE_LENGTH) * 100)
-
-          if (this.state.GHOST_DISTANCE < this.state.PLAYER_DISTANCE) {
-            console.log("You're ahead of the ghost, keep up the pace!")
-          }
-          //
-          else if (this.state.GHOST_DISTANCE == this.state.PLAYER_DISTANCE) {
-            console.log("You're tied with the ghost, time to pick up the pace!")
-          }
-          //
-          else {
-            console.log("You're behind the ghost, what a spooooooky place to be!")
-          }
-
-        });
-      if (this.state.PLAYER_DISTANCE >= this.state.RACE_LENGTH) {
-        clearInterval(this.state.interval)
-        console.log("You finished your run, good job!!")
-        average_speed = (this.state.PLAYER_DISTANCES[-1] / this.state.TIME_ELAPSED)
-        if (this.state.RACE_LENGTH == 2000 && average_speed > this.state.PLAYER_HIGHEST_2K) {
-            this.state.PLAYER_HIGHEST_2K = average_speed
-        }
-        // 
-        else if (this.state.RACE_LENGTH == 5000 && average_speed > this.state.PLAYER_HIGHEST_5K) {
-          this.state.PLAYER_HIGHEST_5K = average_speed
-        }
-        // 
-        else if (this.state.RACE_LENGTH == 10000 && average_speed > this.state.PLAYER_HIGHEST_10K) {
-          this.state.PLAYER_HIGHEST_10K = average_speed
-        }
-        // POST ALL USER INFO HERE BACK TO THE DATABASE
+              console.log("Data" + data)
+            })
       }
-    }, 20000);
+    }, 2000);
   }
   
   componentWillUnmount() {
