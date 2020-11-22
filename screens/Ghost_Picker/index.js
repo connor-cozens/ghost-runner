@@ -11,26 +11,23 @@ export default class LoginScreen extends React.Component {
             <View style={styles.container} >
                 <Text style={styles.logo}>Ghost Runner</Text>
 
-                <View style={styles.inputView} >
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Username"
-                        placeholderTextColor="#003f5c"
-                        onChangeText={text => this.setState({ email: text })} />
-                </View>
-                <View style={styles.inputView} >
-                    <TextInput secureTextEntry={true}
-                        style={styles.inputText}
-                        placeholder="Password"
-                        placeholderTextColor="#003f5c"
-                        onChangeText={text => this.setState({ password: text })} />
-                </View>
-                <TouchableOpacity style={styles.loginBtn}>
-                    <Text style={styles.login}>LOGIN</Text>
+
+                <TouchableOpacity style={styles.inputView}>
+                    <Text style={styles.login}>Race Your Ghost</Text>
                 </TouchableOpacity>
-                <TouchableOpacity>
-                    <Text style={styles.signup}>Signup</Text>
+
+                <TouchableOpacity style={styles.inputView}>
+                    <Text style={styles.login}>Race A Friendly Ghost</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity style={styles.inputView}>
+                    <Text style={styles.login}>Race A Stranger Ghost</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.inputView}>
+                    <Text style={styles.login}>Free Run</Text>
+                </TouchableOpacity>
+
 
             </View >
         );
@@ -55,38 +52,17 @@ const styles = StyleSheet.create({
     inputView: {
         width: "80%",
         backgroundColor: "#465881",
-        borderRadius: 25,
-        height: 50,
+        borderRadius: 35,
+        height: 70,
         marginBottom: 20,
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20
     },
 
-    inputText: {
-        height: 50,
-        color: "white"
-    },
-
     login: {
         color: "white",
-        fontSize: 11
-    },
-
-    signup: {
-        color: "#465881",
-        fontSize: 11
-    },
-
-    loginBtn: {
-        width: "80%",
-        backgroundColor: "#fb5b5a",
-        borderRadius: 25,
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 40,
-        marginBottom: 10
+        fontSize: 17
     },
 });
 
