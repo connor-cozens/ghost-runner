@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Animated, View, Text, StyleSheet, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const { width:WIDTH, height:HEIGHT } = Dimensions.get('window');
 const BAR_MARGIN = 30;
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
 
 export default class ProgressBar extends Component {
   static propTypes = {
+    icon: PropTypes.string,
     progress: PropTypes.number,
     initialProgress: PropTypes.number,
     additionalStyles: PropTypes.oneOfType([
@@ -101,7 +102,7 @@ export default class ProgressBar extends Component {
           ...planeStyles,
           left: planeAnim
         }}>
-          <Icon name="md-car" size={35} color="#000000" />
+          <Icon name={this.props.icon} size={35} color="#000000" />
         </Animated.View>
 
         <View style={styles.line}></View>
