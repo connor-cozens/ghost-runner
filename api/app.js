@@ -91,10 +91,13 @@ app.post('/friendly-ghost-list', function(req, res){
     var field_name = "best_" + km + "k";
     var query = {}
     query[field_name] = {$exists:1}
+    var proj = {}
+    proj["projection"][field_name] = 1;
+    proj["projection"][username] = 1;
     console.log(query);
     MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
         var db = client.db('ghost_db');
-        db.collection('users').find(query, {projection: {username: 1}}).toArray( function (error, result){
+        db.collection('users').find(query, proj).toArray( function (error, result){
             console.log(result);
             res.send(JSON.stringify(result));
         });
