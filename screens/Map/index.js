@@ -1,7 +1,9 @@
 import * as React from 'react';
 import MapView from 'react-native-maps';
+import Marker from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Pin from '../../assets/images/pin.png';
 
 import * as Location from 'expo-location'
 import ProgressBar from './../../components/ProgressBar.js';
@@ -180,6 +182,16 @@ export default class MapScreen extends React.Component {
         }}
         style={styles.mapStyle}
       >
+
+        <MapView.Marker
+        coordinate={{
+          latitude: this.state.lat,
+          longitude: this.state.long,
+        }}
+        title={"title"}
+        description={"Desc"}
+        image = { Pin }
+      />  
       
       </MapView>       
       {/* User Map Icon  */}
