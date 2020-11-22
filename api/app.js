@@ -71,7 +71,7 @@ app.get('/test', function (req, res){
     res.send(JSON.stringify(result));
 })
 
-app.get('/get-ghost-run', function(req, res){
+app.post('/get-ghost-run', function(req, res){
     var data = req.body
     console.log(data)
     var oid = new ObjectID(data.oid)
