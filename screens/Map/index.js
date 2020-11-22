@@ -14,45 +14,82 @@ export default class MapScreen extends React.Component {
     this.state = {
       lat: -49.98491666389771,
       long: -81.24528725322716,
-      PLAYER_ORIGIN: 0,
-      PLAYER_DESTINATION: 0,
+      TIME_ELAPSED: 0,
+      PLAYER_ORIGIN_LONG: 0,
+      PLAYER_ORIGIN_LAT: 0,
+      PLAYER_DESTINATION_LONG: 0,
+      PLAYER_DESTINATION_LAT: 0,
       PLAYER_DISTANCE: 0,
+      PLAYER_CURRENT_DISTANCE: 0,
       GHOST_ORIGIN: 0,
       GHOST_DESTINATION: 0,
       GHOST_DISTANCE: 0,
       PLAYER_PROGRESS: 30,
       GHOST_PROGRESS: 40,
       PLAYER_DISTANCES: [],
-      GHOST_DISTANCES: []
+      GHOST_DISTANCES: [],
+      RACE_LENGTH: 2000
     }
   }
 
   componentDidMount(){
     this.interval = setInterval(() => {
-      console.log("Running...")
+      this.setState({
+        TIME_ELAPSED: (this.state.TIME_ELAPSED + 20),
+        PLAYER_ORIGIN_LONG: (this.state.PLAYER_DESTINATION_LONG),
+        PLAYER_ORIGIN_LAT: (this.state.PLAYER_DESTINATION_LAT),
+      })
+      console.log("Running for: ", this.state.TIME_ELAPSED, " seconds.")
       Location.getCurrentPositionAsync({accuracy: Location.Accuracy.BestForNavigation})
         .then((location) => {
           this.setState({
             lat: location["coords"]["latitude"],
-            long: location["coords"]["longitude"]
+            long: location["coords"]["longitude"],
+            PLAYER_DESTINATION_LONG: location["coords"]["longitude"],
+            PLAYER_DESTINATION_LAT: location["coords"]["latitude"]
           });
-          // console.log(location["coords"]["latitude"])
-          // console.log(this.state.lat)
+          // console.log(this.state.lat, this.state.long)
+          // Get the ghost's distance at TIME_ELAPSED seconds.
+          url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="+
+            this.state.PLAYER_ORIGIN_LAT        + ", " +
+            this.state.PLAYER_ORIGIN_LONG       + "&destinations=" +
+            this.state.PLAYER_DESTINATION_LAT   + ", "+
+            this.state.PLAYER_DESTINATION_LONG  + "&mode=walking&key=AIzaSyD8LiaQi4w3UySiDfi_38xpGvJ2iqFv7Hk";
+          // console.log("URL is: ", url)
+          // distance fetch
+          fetch(url)
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              const distance = data.rows[0].elements[0].distance.text.split(' ')[0]
+              this.setState({
+                PLAYER_CURRENT_DISTANCE: distance,
+              })
+            });
+          
+          this.setState({
+            PLAYER_DISTANCE: parseInt(parseInt(this.state.PLAYER_DISTANCE) + parseInt(this.state.PLAYER_CURRENT_DISTANCE)),
+          })
+          // console.log("Player Distance is now: ", this.state.PLAYER_DISTANCE)
+          this.state.PLAYER_DISTANCES.push(this.state.PLAYER_DISTANCE)
+          // console.log("Player Distances is now: ", this.state.PLAYER_DISTANCES)
+          // const ghost_index = this.state.TIME_ELAPSED / 20
+          // this.state.GHOST_DISTANCE = this.state.GHOST_DISTANCES[ghost_index]
+          // if (this.state.GHOST_DISTANCE < this.state.PLAYER_DISTANCE) {
+          //   console.log("You're ahead of the ghost, keep up the pace!")
+          // }
+          // //
+          // else if (this.state.GHOST_DISTANCE == this.state.PLAYER_DISTANCE) {
+          //   console.log("You're tied with the ghost, time to pick up the pace!")
+          // }
+          // //
+          // else {
+          //   console.log("You're behind the ghost, what a spooooooky place to be!")
+          // }
+
         });
-    }, 5000);
-    
-    console.log(this.state.lat, this.state.long)
-    // this.setInterval(() => {
-    //   // this.getCurrentLocation()
-    //   url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=42.98269275707433, -81.24368352867425&destinations=42.97631742102314, -81.24206316007997&mode=walking&key=AIzaSyD8LiaQi4w3UySiDfi_38xpGvJ2iqFv7Hk";
-    //   fetch(url)
-    //     .then((response) => {
-    //       return response.json();
-    //     })
-    //     .then((data) => {
-    //       console.log(data);
-    //     });
-    //   }, 5000)    
+    }, 20000);
   }
   
   componentWillUnmount() {
