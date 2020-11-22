@@ -26,10 +26,10 @@ export default class LoginScreen extends React.Component {
                         onChangeText={text => this.setState({ password: text })} />
                 </View>
                 <TouchableOpacity style={styles.loginBtn}>
-                    <Text style={styles.forgot}>LOGIN</Text>
+                    <Text style={styles.login}>LOGIN</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Text style={styles.forgot}>Signup</Text>
+                    <Text style={styles.signup}>Signup</Text>
                 </TouchableOpacity>
 
             </View >
@@ -68,8 +68,13 @@ const styles = StyleSheet.create({
         color: "white"
     },
 
-    forgot: {
+    login: {
         color: "white",
+        fontSize: 11
+    },
+
+    signup: {
+        color: "#465881",
         fontSize: 11
     },
 
