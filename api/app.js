@@ -91,7 +91,7 @@ app.post('/friendly-ghost-list', function(req, res){
     var field_name = "best_" + km + "k";
     var query = {}
     query[field_name] = {$exists:1}
-    var proj = {}
+    var proj = {projection: {}};
     proj["projection"][field_name] = 1;
     proj["projection"][username] = 1;
     console.log(query);
