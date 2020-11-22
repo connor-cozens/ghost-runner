@@ -78,7 +78,7 @@ app.get('/get-ghost-run', function(req, res){
     console.log(oid);
     MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
         var db = client.db('ghost_db');
-        db.collection('users').findOne({_id: oid}, {projection: {lastest_run: 1}}, function (error, result){
+        db.collection('users').findOne({_id: oid}, {projection: {latest_run: 1}}, function (error, result){
             res.send(JSON.stringify(result));
         });
         
