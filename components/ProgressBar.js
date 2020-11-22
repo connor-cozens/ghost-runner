@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 
   line: {
     position: 'absolute',
-    width: WIDTH - 60,
+    width: WIDTH,
     top: 17,
     borderWidth: 1,
     borderColor: '#888888',
