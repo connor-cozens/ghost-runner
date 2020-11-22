@@ -12,11 +12,10 @@ export default class MapScreen extends React.Component {
     this.navigation = navigation;
     global.navigation = navigation;
 
-
     this.state = {
       lat: -49.98491666389771,
       long: -81.24528725322716,
-      TIME_ELAPSED: 0,
+      TIME_ELAPSED: -20,
       PLAYER_ORIGIN_LONG: 0,
       PLAYER_ORIGIN_LAT: 0,
       PLAYER_DESTINATION_LONG: 0,
@@ -35,13 +34,17 @@ export default class MapScreen extends React.Component {
   }
 
   componentDidMount(){
+    // Set how often to check for user's new location (default 20 seconds)
     this.interval = setInterval(() => {
       this.setState({
+        // Update the elapsed time & set previous coordinates to origin
         TIME_ELAPSED: (this.state.TIME_ELAPSED + 20),
         PLAYER_ORIGIN_LONG: (this.state.PLAYER_DESTINATION_LONG),
         PLAYER_ORIGIN_LAT: (this.state.PLAYER_DESTINATION_LAT),
       })
+      // Test to print how long tracking has been going for
       console.log("Running for: ", this.state.TIME_ELAPSED, " seconds.")
+      // Get the current location and set map to center on current location
       Location.getCurrentPositionAsync({accuracy: Location.Accuracy.BestForNavigation})
         .then((location) => {
           this.setState({
@@ -50,15 +53,14 @@ export default class MapScreen extends React.Component {
             PLAYER_DESTINATION_LONG: location["coords"]["longitude"],
             PLAYER_DESTINATION_LAT: location["coords"]["latitude"]
           });
-          // console.log(this.state.lat, this.state.long)
-          // Get the ghost's distance at TIME_ELAPSED seconds.
+          // Create URL to push based on origin and destination times
           url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="+
             this.state.PLAYER_ORIGIN_LAT        + ", " +
             this.state.PLAYER_ORIGIN_LONG       + "&destinations=" +
             this.state.PLAYER_DESTINATION_LAT   + ", "+
             this.state.PLAYER_DESTINATION_LONG  + "&mode=walking&key=AIzaSyD8LiaQi4w3UySiDfi_38xpGvJ2iqFv7Hk";
           // console.log("URL is: ", url)
-          // distance fetch
+          // Retrieve the distance from the google servers
           fetch(url)
             .then((response) => {
               return response.json();
@@ -70,6 +72,7 @@ export default class MapScreen extends React.Component {
               })
             });
           
+          // Calculate the player's new travelled distance at the current point
           this.setState({
             PLAYER_DISTANCE: parseInt(parseInt(this.state.PLAYER_DISTANCE) + parseInt(this.state.PLAYER_CURRENT_DISTANCE)),
           })
