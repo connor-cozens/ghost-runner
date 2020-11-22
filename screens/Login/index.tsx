@@ -34,20 +34,12 @@ export default class LoginScreen extends React.Component<{}, {username: string, 
                     global.navigation.navigate('Map');
                 } else{
                     Alert.alert("Login Invalid, Please Try Again");
-                    this.setState({
-                        username: "",
-                        password: ""
-                    });
 
                 }
             })
             .catch((error) => {
                 console.error(error);
                 Alert.alert("Login Invalid, Please Try Again");
-                    this.setState({
-                        username: "",
-                        password: ""
-                    });
             });
     }
 
