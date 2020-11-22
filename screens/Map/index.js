@@ -41,7 +41,7 @@ export default class MapScreen extends React.Component {
       PLAYER_HIGHEST_5K: 0,
       PLAYER_HIGHEST_10K: 0,
       GHOST_ID: "5fb94e5945f3e966b61e515d",
-      PLAYER_ID: global.iod
+      PLAYER_ID: global.oid
     }
   }
   handleOnNavigationBack(){
