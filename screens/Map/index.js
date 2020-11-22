@@ -153,7 +153,7 @@ export default class MapScreen extends React.Component {
           return response.json();
         })
         .then((data) => {
-          if (this.state.TIME_ELAPSED == 20) {
+          if (this.state.PLAYER_ORIGIN_LAT == 0) {
             const distance = 0
           }
           else {
@@ -166,7 +166,7 @@ export default class MapScreen extends React.Component {
           
       // Calculate the player's new travelled distance at the current point
       this.setState({
-        PLAYER_DISTANCE: parseInt(parseInt(this.state.PLAYER_DISTANCE) + parseInt(this.state.PLAYER_CURRENT_DISTANCE) + 500),
+        PLAYER_DISTANCE: parseInt(parseInt(this.state.PLAYER_DISTANCE) + parseInt(this.state.PLAYER_CURRENT_DISTANCE)),
       })
       // console.log("Player Distance is now: ", this.state.PLAYER_DISTANCE)
       this.state.PLAYER_DISTANCES.push(this.state.PLAYER_DISTANCE)
@@ -242,7 +242,7 @@ export default class MapScreen extends React.Component {
               console.log("Data" + data)
             })
       }
-    }, 2000);
+    }, 5000);
   }
   
   componentWillUnmount() {
