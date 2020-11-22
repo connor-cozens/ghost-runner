@@ -93,7 +93,7 @@ app.post('/friendly-ghost-list', function(req, res){
     query[field_name] = {$exists:1}
     var proj = {projection: {}};
     proj["projection"][field_name] = 1;
-    proj["projection"][username] = 1;
+    proj["projection"]["username"] = 1;
     console.log(query);
     console.log(proj);
     MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
