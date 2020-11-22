@@ -26,8 +26,8 @@ export default class MapScreen extends React.Component {
       GHOST_ORIGIN: 0,
       GHOST_DESTINATION: 0,
       GHOST_DISTANCE: 0,
-      PLAYER_PROGRESS: 30,
-      GHOST_PROGRESS: 40,
+      PLAYER_PROGRESS: 0,
+      GHOST_PROGRESS: 0,
       PLAYER_DISTANCES: [],
       GHOST_DISTANCES: [],
       RACE_LENGTH: 2000
@@ -75,9 +75,13 @@ export default class MapScreen extends React.Component {
           })
           // console.log("Player Distance is now: ", this.state.PLAYER_DISTANCE)
           this.state.PLAYER_DISTANCES.push(this.state.PLAYER_DISTANCE)
-          // console.log("Player Distances is now: ", this.state.PLAYER_DISTANCES)
+          console.log("Player Distances is now: ", this.state.PLAYER_DISTANCES)
           // const ghost_index = this.state.TIME_ELAPSED / 20
           // this.state.GHOST_DISTANCE = this.state.GHOST_DISTANCES[ghost_index]
+
+          // this.state.PLAYER_PROGRESS = parseInt((this.state.PLAYER_DISTANCE / this.state.RACE_LENGTH) * 100)
+          // this.state.GHOST_PROGRESS = parseInt((this.state.GHOST_DISTANCE / this.state.RACE_LENGTH) * 100)
+
           // if (this.state.GHOST_DISTANCE < this.state.PLAYER_DISTANCE) {
           //   console.log("You're ahead of the ghost, keep up the pace!")
           // }
@@ -96,16 +100,6 @@ export default class MapScreen extends React.Component {
   
   componentWillUnmount() {
     clearInterval(this.interval);
-  }
-
-  updatePlayerBar = (player_distance, race_distance) => {
-    PLAYER_PROGRESS = (player_distance - race_distance) * 100;
-    GHOST_PROGRESS = (player_distance - race_distance) * 100;
-  }
-
-  updateGhostBar = (ghost_distance, race_distance) => {
-    PLAYER_PROGRESS = (ghost_distance - race_distance) * 100;
-    GHOST_PROGRESS = (ghost_distance - race_distance) * 100;
   }
 
   render() {
@@ -153,65 +147,7 @@ export default class MapScreen extends React.Component {
     </View>
     )
   }
-
-  restRequest() {
-    url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=-49.98491666389771,-81.24528725322716&destinations=-49.6905615%2C-81.9976592&key=AIzaSyD8LiaQi4w3UySiDfi_38xpGvJ2iqFv7Hk";
-    fetch(url)
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      console.log(data);
-    });
-    
-    // const origin = {lat: -49.98491666389771, lng: -81.24528725322716}
-    // const destination = {lat: -50, lng: -81}
-
-    // service = new google.maps.DistanceMatrixService();
-    // <DistanceMatrixService
-    // options=
-    //   {{
-    //     destinations: [origin],
-    //     origins: [destination],
-    //     travelMode: "WALKING",
-    //   }}
-    // callback = {(response) => {console.log(response)}}
-    // />
-  }
 }
-
-//   componentDidMount() {
-//     this.interval = setInterval(() => 
-//       // Calculate player's distance travelled
-//       player_distance = require('google-distance'),
-//       player_distance.get(
-//         {
-//           origin:       this.PLAYER_ORIGIN,
-//           destination:  this.PLAYER_DESTINATION
-//         },
-//         function(err, data) {
-//           if (err) return console.log(err);
-//           console.log(data);
-//         }
-//       ),
-//       this.PLAYER_DISTANCES.push(player_distance),
-//       // Calculate ghost's distance travelled
-//       ghost_distance = require('google-distance'),
-//       ghost_distance.get(
-//         {
-//           origin:       this.GHOST_ORIGIN,
-//           destination:  this.GHOST_DESTINATION
-//         },
-//         function(err, data) {
-//           if (err) return console.log(err);
-//           console.log(data);
-//         }
-//       ),
-//       this.GHOST_DISTANCES.push(ghost_distance),
-//       this.setState({PLAYER_PROGRESS: (PLAYER_PROGRESS + 1)}),
-//       this.updatePlayerBar(this.PLAYER_PROGRESS, 500), 20000);
-//   }
-// }
 
 const styles = StyleSheet.create({
   container: {
