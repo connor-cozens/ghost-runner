@@ -48,7 +48,9 @@ app.post('/create-user', function(req, res){
     })
 })
 
-app.get('/verify-user', function(req, res){
+app.post('/verify-user', function(req, res){
+    var data = req.body
+    console.log(data);
     MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
         var db = client.db('ghost_db');
         db.collection('users').findOne({username: req.username, password: req.password}, function(error, result){
@@ -71,9 +73,9 @@ app.get('/home', (req, res) => {
 })
 
 
-// https.createServer({
-//     key: fs.readFileSync('./key.pem'),
-//     cert: fs.readFileSync('./cert.pem'),
-//     passphrase: 'letmein'
-// }, app)
+https.createServer({
+    key: fs.readFileSync('./key.pem'),
+    cert: fs.readFileSync('./cert.pem'),
+    passphrase: 'letmein'
+}, app)
 app.listen(8080);

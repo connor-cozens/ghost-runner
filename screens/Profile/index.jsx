@@ -25,7 +25,7 @@ export default class ProfileScreen extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                objectId: "5fb94e5945f3e966b61e515d",
+                objectId: global.oid,
             })
         }).then((response) => response.json())
             .then((json) => {
