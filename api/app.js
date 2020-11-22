@@ -2,8 +2,8 @@ const express = require('express')
 const MongoClient = require('mongodb').MongoClient
 const ObjectID = require('mongodb').ObjectID;
 var bodyParser = require('body-parser')
-const https = require('https');
-const fs = require('fs');
+const fs = require('fs')
+const https = require('https')
 
 
 const app = express()
@@ -76,4 +76,4 @@ app.get('/home', (req, res) => {
 //     cert: fs.readFileSync('./cert.pem'),
 //     passphrase: 'letmein'
 // }, app)
-.listen(8080);
+app.listen(8080);

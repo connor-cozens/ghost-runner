@@ -16,31 +16,57 @@ export default class MapScreen extends React.Component {
       long: -81.24528725322716,
       PLAYER_ORIGIN: 0,
       PLAYER_DESTINATION: 0,
+      PLAYER_DISTANCE: 0,
       GHOST_ORIGIN: 0,
-      GHOST_DESTINATION: 40,
-      PLAYER_PROGRESS: 20,
-      GHOST_PROGRESS: 0,
+      GHOST_DESTINATION: 0,
+      GHOST_DISTANCE: 0,
+      PLAYER_PROGRESS: 30,
+      GHOST_PROGRESS: 40,
       PLAYER_DISTANCES: [],
       GHOST_DISTANCES: []
     }
   }
 
   componentDidMount(){
-    Location.getCurrentPositionAsync()
-    .then((location) => {
-      this.setState({
-        lat: location["coords"]["latitude"],
-        long: location["coords"]["longitude"]
-      });
-    });
-    url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=-42.98269275707433, -81.24368352867425&destinations=42.97631742102314, -81.24206316007997&key=AIzaSyD8LiaQi4w3UySiDfi_38xpGvJ2iqFv7Hk";
-    fetch(url)
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      console.log(data);
-    });
+    this.interval = setInterval(() => {
+      console.log("Running...")
+      Location.getCurrentPositionAsync({accuracy: Location.Accuracy.BestForNavigation})
+        .then((location) => {
+          this.setState({
+            lat: location["coords"]["latitude"],
+            long: location["coords"]["longitude"]
+          });
+          // console.log(location["coords"]["latitude"])
+          // console.log(this.state.lat)
+        });
+    }, 5000);
+    
+    console.log(this.state.lat, this.state.long)
+    // this.setInterval(() => {
+    //   // this.getCurrentLocation()
+    //   url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=42.98269275707433, -81.24368352867425&destinations=42.97631742102314, -81.24206316007997&mode=walking&key=AIzaSyD8LiaQi4w3UySiDfi_38xpGvJ2iqFv7Hk";
+    //   fetch(url)
+    //     .then((response) => {
+    //       return response.json();
+    //     })
+    //     .then((data) => {
+    //       console.log(data);
+    //     });
+    //   }, 5000)    
+  }
+  
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  updatePlayerBar = (player_distance, race_distance) => {
+    PLAYER_PROGRESS = (player_distance - race_distance) * 100;
+    GHOST_PROGRESS = (player_distance - race_distance) * 100;
+  }
+
+  updateGhostBar = (ghost_distance, race_distance) => {
+    PLAYER_PROGRESS = (ghost_distance - race_distance) * 100;
+    GHOST_PROGRESS = (ghost_distance - race_distance) * 100;
   }
 
   render() {
@@ -76,11 +102,11 @@ export default class MapScreen extends React.Component {
       </Text>
       {/* Player Progress Bar */}
       <View style={styles.progress1}>
-        <ProgressBar progress={this.state.PLAYER_PROGRESS}/>
+        <ProgressBar icon="run" progress={this.state.PLAYER_PROGRESS}/>
       </View>
       {/* Ghost Progress Bar */}
       <View style={styles.progress2}>
-        <ProgressBar progress={this.state.GHOST_PROGRESS}/>
+        <ProgressBar icon="ghost" progress={this.state.GHOST_PROGRESS}/>
       </View>
     </View>
     )
@@ -110,53 +136,40 @@ export default class MapScreen extends React.Component {
     // callback = {(response) => {console.log(response)}}
     // />
   }
-
-  // componentDidMount() {
-  //   this.interval = setInterval(() => 
-  //     // Calculate player's distance travelled
-  //     player_distance = require('google-distance'),
-  //     player_distance.get(
-  //       {
-  //         origin:       this.PLAYER_ORIGIN,
-  //         destination:  this.PLAYER_DESTINATION
-  //       },
-  //       function(err, data) {
-  //         if (err) return console.log(err);
-  //         console.log(data);
-  //       }
-  //     ),
-  //     this.PLAYER_DISTANCES.push(player_distance),
-  //     // Calculate ghost's distance travelled
-  //     ghost_distance = require('google-distance'),
-  //     ghost_distance.get(
-  //       {
-  //         origin:       this.GHOST_ORIGIN,
-  //         destination:  this.GHOST_DESTINATION
-  //       },
-  //       function(err, data) {
-  //         if (err) return console.log(err);
-  //         console.log(data);
-  //       }
-  //     ),
-  //     this.GHOST_DISTANCES.push(ghost_distance),
-  //     this.setState({PLAYER_PROGRESS: (PLAYER_PROGRESS + 1)}),
-  //     this.updatePlayerBar(this.PLAYER_PROGRESS, 500), 20000);
-  // }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  updatePlayerBar = (player_distance, race_distance) => {
-    PLAYER_PROGRESS = (player_distance - race_distance) * 100;
-    GHOST_PROGRESS = (player_distance - race_distance) * 100;
-  }
-
-  updateGhostBar = (ghost_distance, race_distance) => {
-    PLAYER_PROGRESS = (ghost_distance - race_distance) * 100;
-    GHOST_PROGRESS = (ghost_distance - race_distance) * 100;
-  }
 }
+
+//   componentDidMount() {
+//     this.interval = setInterval(() => 
+//       // Calculate player's distance travelled
+//       player_distance = require('google-distance'),
+//       player_distance.get(
+//         {
+//           origin:       this.PLAYER_ORIGIN,
+//           destination:  this.PLAYER_DESTINATION
+//         },
+//         function(err, data) {
+//           if (err) return console.log(err);
+//           console.log(data);
+//         }
+//       ),
+//       this.PLAYER_DISTANCES.push(player_distance),
+//       // Calculate ghost's distance travelled
+//       ghost_distance = require('google-distance'),
+//       ghost_distance.get(
+//         {
+//           origin:       this.GHOST_ORIGIN,
+//           destination:  this.GHOST_DESTINATION
+//         },
+//         function(err, data) {
+//           if (err) return console.log(err);
+//           console.log(data);
+//         }
+//       ),
+//       this.GHOST_DISTANCES.push(ghost_distance),
+//       this.setState({PLAYER_PROGRESS: (PLAYER_PROGRESS + 1)}),
+//       this.updatePlayerBar(this.PLAYER_PROGRESS, 500), 20000);
+//   }
+// }
 
 const styles = StyleSheet.create({
   container: {
