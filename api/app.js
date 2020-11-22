@@ -85,6 +85,32 @@ app.post('/get-ghost-run', function(req, res){
     });   
 });
 
+app.post('/friendly-ghost-list', function(req, res){
+    var data = req.body
+    var km = data["km"]
+    var field_name = "best_" + km + "k";
+    var query = {}
+    query[field_name] = {$exists:1}
+    console.log(query);
+    MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
+        var db = client.db('ghost_db');
+        db.collection('users').find(query, {projection: {username: 1}}, function (error, result){
+            res.send(JSON.stringify(result));
+        });
+        
+    });   
+});
+
+// app.post('/friendly-ghost-list', function(req, res){
+//     MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
+//         var db = client.db('ghost_db');
+//         db.collection('users').find({}, {projection: {username: 1}}, function (error, result){
+//             res.send(JSON.stringify(result));
+//         });
+        
+//     });   
+// });
+
 
 
 // app.listen(8080, () => {
