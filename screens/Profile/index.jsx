@@ -18,16 +18,14 @@ export default class ProfileScreen extends React.Component {
     }
 
     componentDidMount() {
-        //var url = `http://35.192.22.94/get-profile-data?var=${this.props.username}`
-
-        fetch('http://35.192.22.94/get-profile-data', {
+        fetch('https://ghost.ryandavis.tech:8080/get-profile-data', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                objectId: '5fb94e5945f3e966b61e515d',
+                objectId: "5fb94e5945f3e966b61e515d",
             })
         }).then((response) => response.json())
             .then((json) => {
