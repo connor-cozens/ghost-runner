@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 50,
     fontWeight: 'bold',
-    left: 340,
+    left: 320,
     flexDirection: 'row',
     padding: 5,
     backgroundColor: "#fb5b5a",
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 100,
     fontWeight: 'bold',
-    left: 340,
+    left: 320,
     flexDirection: 'row',
     padding: 5,
     backgroundColor: "#fb5b5a",
@@ -261,8 +261,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 150,
     fontWeight: 'bold',
-    paddingLeft: 300,
-    backgroundColor: "#fb5b5a"
+    left: 320,
+    flexDirection: 'row',
+    padding: 5,
+    backgroundColor: "#fb5b5a",
+    borderRadius: 5,
+    color: 'white'
   },
   GhostPickerButton: {
     position: "absolute",
