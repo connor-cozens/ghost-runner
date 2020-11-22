@@ -10,6 +10,8 @@ export default class MapScreen extends React.Component {
   constructor({ navigation }){
     super()
     this.navigation = navigation;
+    global.navigation = navigation;
+
 
     this.state = {
       lat: -49.98491666389771,
@@ -89,17 +91,20 @@ export default class MapScreen extends React.Component {
         >Ghost
       </Text>
       {/* Menu Item 2 */}
-      <Text 
+      {global.signedIn ? (null) : 
+      (<Text 
         onPress = { () => this.navigation.navigate('Login')} 
         style={styles.login}
         >Login
-      </Text>
+      </Text>)}
       {/* Menu Item 3 */}
-      <Text 
+      { global.signedIn ?
+      (<Text 
         onPress = { () => this.navigation.navigate('Profile')} 
         style={styles.profile}
         >Profile
       </Text>
+      ) : (null)}
       {/* Player Progress Bar */}
       <View style={styles.progress1}>
         <ProgressBar icon="run" progress={this.state.PLAYER_PROGRESS}/>
