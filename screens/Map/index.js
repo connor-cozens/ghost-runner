@@ -3,6 +3,9 @@ import MapView from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions, Button} from 'react-native';
 import { GoogleMap, DistanceMatrixService } from "@react-google-maps/api";
 
+import Marker from 'react-native-maps';
+
+import Pin from '../../assets/images/pin.png';
 import * as Location from 'expo-location'
 import ProgressBar from './../../components/ProgressBar.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -232,8 +235,18 @@ export default class MapScreen extends React.Component {
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
-        style={styles.mapStyle}
+        style={styles.mapStyle}>
+
+      <MapView.Marker
+        coordinate={{
+          latitude: this.state.lat,
+          longitude: this.state.long,
+        }}
+        title={"title"}
+        description={"Desc"}
+        image = { Pin }
       />  
+        </MapView>  
 
       {/* Menu Item 1 */}
         <Text 
