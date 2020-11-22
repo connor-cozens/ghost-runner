@@ -106,7 +106,7 @@ app.post('/friendly-ghost-list', function(req, res){
     });   
 });
 
-app.post('/upload_run', function(req, res){
+app.post('/upload-run', function(req, res){
     var data = req.body;
     console.log(data);
     var oid = new ObjectID(data.oid);
