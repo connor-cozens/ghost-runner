@@ -1,3 +1,7 @@
+// This code was forked from: https://github.com/kis/react-native-air-progress-bar/blob/master/index.js
+// and adapted to the needs of our program. Mainly to deal with outdated dependencies.
+// 
+// We claim no rights to any copyright or published work.
 import React, { Component } from 'react';
 import { Animated, View, Text, StyleSheet, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
