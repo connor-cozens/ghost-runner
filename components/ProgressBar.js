@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     width: WIDTH - 60,
     top: 17,
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: '#888888',
     alignSelf: 'flex-end',
   }
 });
@@ -77,7 +77,7 @@ export default class ProgressBar extends Component {
       position: 'absolute',
       top: 17,
       borderWidth: 1,
-      borderColor: '#9ed3c7',
+      borderColor: '#888888',
       alignSelf: 'flex-start',
       transform: [{'translate':[0,0,1]}]
     };
@@ -96,6 +96,8 @@ export default class ProgressBar extends Component {
         // color: "#000000"
       }, additionalStyles]}>
 
+        <View style={styles.line}></View>
+
         <Animated.View style={{
           ...lineActive,
           width: activeSegmentAnim,
@@ -109,7 +111,7 @@ export default class ProgressBar extends Component {
           <Icon name={this.props.icon} size={35} color="#000000" />
         </Animated.View>
 
-        <View style={styles.line}></View>
+        
 
       </View>
     );

@@ -30,10 +30,20 @@ export default class MapScreen extends React.Component {
       PLAYER_DISTANCES: [],
       GHOST_DISTANCES: [],
       RACE_LENGTH: 2000
+
     }
   }
 
   componentDidMount(){
+    // Center map on user at app startup
+    Location.getCurrentPositionAsync({accuracy: Location.Accuracy.BestForNavigation})
+        .then((location) => {
+          this.setState({
+            lat: location["coords"]["latitude"],
+            long: location["coords"]["longitude"],
+          })
+        }),
+    // Get the ghost data for the ghost you're racing
     fetch("https://ghost.ryandavis.tech:8080/get-ghost-run", {
             method: 'POST',
             headers: {
@@ -51,10 +61,10 @@ export default class MapScreen extends React.Component {
               this.setState({
                 GHOST_DISTANCES: data.latest_run
               })
-              console.log(data)
-            })
+              // console.log(data)
+            }),
     // Set how often to check for user's new location (default 20 seconds)
-    this.interval = setInterval(() => {
+    this.state.interval = setInterval(() => {
       this.setState({
         // Update the elapsed time & set previous coordinates to origin
         TIME_ELAPSED: (this.state.TIME_ELAPSED + 20),
@@ -85,19 +95,24 @@ export default class MapScreen extends React.Component {
               return response.json();
             })
             .then((data) => {
-              const distance = data.rows[0].elements[0].distance.text.split(' ')[0]
-              this.setState({
-                PLAYER_CURRENT_DISTANCE: distance,
-              })
+              if (this.state.TIME_ELAPSED == 20) {
+                const distance = 0
+              }
+              else {
+                const distance = data.rows[0].elements[0].distance.text.split(' ')[0]
+                this.setState({
+                  PLAYER_CURRENT_DISTANCE: distance,
+                })
+              }
             });
           
           // Calculate the player's new travelled distance at the current point
           this.setState({
-            PLAYER_DISTANCE: parseInt(parseInt(this.state.PLAYER_DISTANCE) + parseInt(this.state.PLAYER_CURRENT_DISTANCE)),
+            PLAYER_DISTANCE: parseInt(parseInt(this.state.PLAYER_DISTANCE) + parseInt(this.state.PLAYER_CURRENT_DISTANCE) + 500),
           })
           // console.log("Player Distance is now: ", this.state.PLAYER_DISTANCE)
           this.state.PLAYER_DISTANCES.push(this.state.PLAYER_DISTANCE)
-          console.log("Player Distances is now: ", this.state.PLAYER_DISTANCES)
+          // console.log("Player Distances is now: ", this.state.PLAYER_DISTANCES)
           
           const ghost_index = this.state.TIME_ELAPSED / 20
           this.state.GHOST_DISTANCE = this.state.GHOST_DISTANCES[ghost_index]
@@ -118,11 +133,15 @@ export default class MapScreen extends React.Component {
           }
 
         });
+      if (this.state.PLAYER_DISTANCE >= this.state.RACE_LENGTH) {
+        clearInterval(this.state.interval)
+        console.log("You finished your run, good job!!")
+      }
     }, 20000);
   }
   
   componentWillUnmount() {
-    clearInterval(this.interval);
+    clearInterval(this.state.interval);
   }
 
   render() {
@@ -206,7 +225,7 @@ const styles = StyleSheet.create({
   },
   progress1: {
     position: "absolute",
-    top: 10,
+    top: 0,
     // color: "black"
   },
   progress2: {
