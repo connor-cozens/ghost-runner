@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TextInput, View, TouchableOpacity, Text, Alert } from 'react-native';
+import { StyleSheet, TextInput, View, TouchableOpacity, Text, Alert, Image } from 'react-native';
 
 
 export default class LoginScreen extends React.Component<{}, {username: string, password: string}> {
@@ -54,6 +54,7 @@ export default class LoginScreen extends React.Component<{}, {username: string, 
     render() {
         return (
             <View style={styles.container} >
+                <Image source = {require('../../assets/images/ghost.png')} style={styles.ghostImage}/>
                 <Text style={styles.logo}>Ghost Runner</Text>
 
                 <View style={styles.inputView} >
@@ -133,6 +134,11 @@ const styles = StyleSheet.create({
         marginTop: 40,
         marginBottom: 10
     },
+    ghostImage: {
+        width: 100,
+        height: 125,
+        //marginBottom: 10
+    }
 });
 
 
