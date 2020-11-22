@@ -11,7 +11,6 @@ export default class RaceLength extends React.Component {
     }
 
     chooseLen(){
-        console.log("bye")
         console.log(this.state);
 
         fetch('https://ghost.ryandavis.tech:8080/friendly-ghost-list', {
@@ -21,14 +20,15 @@ export default class RaceLength extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                length: this.state.race_len,
+                km: this.state.race_len,
                 
             })
         }).then((response) => response.json())
             .then((json) => {
                     global.friends_avgs = json;
+                    console.log(JSON.stringify(json));
                     global.race_length = this.state.race_len;
-                    global.navigation.navigate('Friends');
+                    global.navigation.navigate('Friends', {paramKey: json,});
                     
             })
             .catch((error) => {
@@ -45,15 +45,15 @@ export default class RaceLength extends React.Component {
             <View style={styles.container} >
                 <Text style={styles.logo}>Race Length</Text>
                 
-                <TouchableOpacity style={styles.inputView} onPress = { () => {this.chooseLen; console.log("hi")}}>
+                <TouchableOpacity style={styles.inputView} onPress = { () => {this.setState({race_len: '2'}); this.chooseLen(); }}>
                     <Text style={styles.login}>2 KM</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.inputView} onPress = { () => {this.setState({race_len: '5'}); this.chooseLen}}>
+                <TouchableOpacity style={styles.inputView} onPress = { () => {this.setState({race_len: '5'}); this.chooseLen()}}>
                     <Text style={styles.login}>5 KM</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.inputView} onPress = { () => {this.setState({race_len: '10'}); this.chooseLen}}>
+                <TouchableOpacity style={styles.inputView} onPress = { () => {this.setState({race_len: '10'}); this.chooseLen()}}>
                     <Text style={styles.login}>10 KM</Text>
                 </TouchableOpacity>
 

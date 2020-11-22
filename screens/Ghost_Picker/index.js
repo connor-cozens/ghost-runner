@@ -2,15 +2,10 @@ import * as React from 'react';
 import { StyleSheet, TextInput, View, TouchableOpacity, Text } from 'react-native';
 
 export default class GhostPickerScreen extends React.Component {
-    state = {
-        email: "",
-        password: ""
-    }
     render() {
         return (
             <View style={styles.container} >
                 <Text style={styles.logo}>Ghost Runner</Text>
-
 
                 <TouchableOpacity style={styles.inputView} >
                     <Text style={styles.login}>Race Your Ghost</Text>

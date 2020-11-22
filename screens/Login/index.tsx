@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TextInput, View, TouchableOpacity, Text, Alert } from 'react-native';
+import { StyleSheet, TextInput, View, TouchableOpacity, Text, Alert, Image } from 'react-native';
 
 
 export default class LoginScreen extends React.Component<{}, {username: string, password: string}> {
@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         margin: 20,
+        backgroundColor: '#dadde5'
     },
 
     logo: {
