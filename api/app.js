@@ -71,6 +71,21 @@ app.get('/test', function (req, res){
     res.send(JSON.stringify(result));
 })
 
+app.get('/get-ghost-run', function(req, res){
+    var data = req.body
+    console.log(data)
+    var oid = new ObjectID(data.oid)
+    console.log(objectId);
+    MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
+        var db = client.db('ghost_db');
+        db.collection('users').findOne({_id: oid}, {projection: {lastest_run: 1}}, function (error, result){
+            res.send(JSON.stringify(result));
+        });
+        
+    });   
+});
+
+
 
 // app.listen(8080, () => {
 //     console.log('app starting')
