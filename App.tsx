@@ -11,6 +11,8 @@ import MapScreen from './screens/Map';
 import GhostPickerScreen from './screens/Ghost_Picker';
 import LoginScreen from './screens/Login';
 import ProfileScreen from './screens/Profile';
+import Friends from './screens/Friends';
+import RaceLength from './screens/Race_Length';
 import { Alert } from 'react-native';
 // import LandingScreen from './screens/Landing_Page';
 
@@ -44,6 +46,8 @@ export default class App extends Component {
           <RootStack.Screen name = "Ghost"    component = {GhostPickerScreen} />
           <RootStack.Screen name = "Login"    component = {LoginScreen} />
           <RootStack.Screen name = "Profile"  component = {ProfileScreen} />
+          <RootStack.Screen name = "Friends"  component = {Friends} />
+          <RootStack.Screen name = "RaceLength"  component = {RaceLength} />
         </RootStack.Navigator>
       </NavigationContainer>
     );
