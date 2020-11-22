@@ -54,9 +54,13 @@ app.post('/verify-user', function(req, res){
     MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
         var db = client.db('ghost_db')
         db.collection('users').findOne({username: data.username, password: data.password}, {projection: {_id: 1}}, function(error, result){
-            result["signedIn"] = true;
+            if (result != null) {
+                result["signedIn"] = true;
+                console.log(result);
+            } else {
+                console.log('User Not Found')
+            }
             res.send(JSON.stringify(result));
-            console.log(result);
         })
     })
 })
