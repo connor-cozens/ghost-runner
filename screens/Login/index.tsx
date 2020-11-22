@@ -1,11 +1,55 @@
 import * as React from 'react';
-import { StyleSheet, TextInput, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TextInput, View, TouchableOpacity, Text, Alert } from 'react-native';
 
-export default class LoginScreen extends React.Component {
-    state = {
-        email: "",
-        password: ""
+
+export default class LoginScreen extends React.Component<{}, {username: string, password: string}> {
+
+    constructor(props, { navigation }){
+        super(props);
+        this.state = {
+            username: "",
+            password: ""
+        }
+        this.signIn = this.signIn.bind(this);
     }
+     
+    signIn(){
+        console.log(this.state);
+        fetch('https://ghost.ryandavis.tech:8080/verify-user', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: this.state.username,
+                password: this.state.password
+            })
+        }).then((response) => response.json())
+            .then((json) => {
+                if (json.signedIn == true){
+                    global.signedIn = true;
+                    global.oid = json._id;
+                    global.navigation.navigate('Map');
+                } else{
+                    Alert.alert("Login Invalid, Please Try Again");
+                    this.setState({
+                        username: "",
+                        password: ""
+                    });
+
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                Alert.alert("Login Invalid, Please Try Again");
+                    this.setState({
+                        username: "",
+                        password: ""
+                    });
+            });
+    }
+
     render() {
         return (
             <View style={styles.container} >
@@ -16,7 +60,7 @@ export default class LoginScreen extends React.Component {
                         style={styles.inputText}
                         placeholder="Username"
                         placeholderTextColor="#003f5c"
-                        onChangeText={text => this.setState({ email: text })} />
+                        onChangeText={text => this.setState({ username: text })} />
                 </View>
                 <View style={styles.inputView} >
                     <TextInput secureTextEntry={true}
@@ -25,7 +69,7 @@ export default class LoginScreen extends React.Component {
                         placeholderTextColor="#003f5c"
                         onChangeText={text => this.setState({ password: text })} />
                 </View>
-                <TouchableOpacity style={styles.loginBtn}>
+                <TouchableOpacity onPress={this.signIn} style={styles.loginBtn}>
                     <Text style={styles.login}>LOGIN</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
