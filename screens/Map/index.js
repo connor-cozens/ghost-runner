@@ -19,7 +19,7 @@ export default class MapScreen extends React.Component {
       GHOST_ORIGIN: 0,
       GHOST_DESTINATION: 40,
       PLAYER_PROGRESS: 20,
-      GHOST_PROGRESS: 0,
+      GHOST_PROGRESS: 50,
       PLAYER_DISTANCES: [],
       GHOST_DISTANCES: []
     }
@@ -76,11 +76,11 @@ export default class MapScreen extends React.Component {
       </Text>
       {/* Player Progress Bar */}
       <View style={styles.progress1}>
-        <ProgressBar progress={this.state.PLAYER_PROGRESS}/>
+        <ProgressBar icon="run" progress={this.state.PLAYER_PROGRESS}/>
       </View>
       {/* Ghost Progress Bar */}
       <View style={styles.progress2}>
-        <ProgressBar progress={this.state.GHOST_PROGRESS}/>
+        <ProgressBar icon="ghost" progress={this.state.GHOST_PROGRESS}/>
       </View>
     </View>
     )
