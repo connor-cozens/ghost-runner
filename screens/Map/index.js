@@ -15,7 +15,7 @@ export default class MapScreen extends React.Component {
     this.state = {
       lat: -49.98491666389771,
       long: -81.24528725322716,
-      TIME_ELAPSED: -20,
+      TIME_ELAPSED: 0,
       PLAYER_ORIGIN_LONG: 0,
       PLAYER_ORIGIN_LAT: 0,
       PLAYER_DESTINATION_LONG: 0,
@@ -34,6 +34,25 @@ export default class MapScreen extends React.Component {
   }
 
   componentDidMount(){
+    fetch("https://ghost.ryandavis.tech:8080/get-ghost-run", {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              "oid": "5fb94e5945f3e966b61e515d"
+            })
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              this.setState({
+                GHOST_DISTANCES: data.latest_run
+              })
+              console.log(data)
+            })
     // Set how often to check for user's new location (default 20 seconds)
     this.interval = setInterval(() => {
       this.setState({
@@ -79,23 +98,24 @@ export default class MapScreen extends React.Component {
           // console.log("Player Distance is now: ", this.state.PLAYER_DISTANCE)
           this.state.PLAYER_DISTANCES.push(this.state.PLAYER_DISTANCE)
           console.log("Player Distances is now: ", this.state.PLAYER_DISTANCES)
-          // const ghost_index = this.state.TIME_ELAPSED / 20
-          // this.state.GHOST_DISTANCE = this.state.GHOST_DISTANCES[ghost_index]
+          
+          const ghost_index = this.state.TIME_ELAPSED / 20
+          this.state.GHOST_DISTANCE = this.state.GHOST_DISTANCES[ghost_index]
 
-          // this.state.PLAYER_PROGRESS = parseInt((this.state.PLAYER_DISTANCE / this.state.RACE_LENGTH) * 100)
-          // this.state.GHOST_PROGRESS = parseInt((this.state.GHOST_DISTANCE / this.state.RACE_LENGTH) * 100)
+          this.state.PLAYER_PROGRESS = parseInt((this.state.PLAYER_DISTANCE / this.state.RACE_LENGTH) * 100)
+          this.state.GHOST_PROGRESS = parseInt((this.state.GHOST_DISTANCE / this.state.RACE_LENGTH) * 100)
 
-          // if (this.state.GHOST_DISTANCE < this.state.PLAYER_DISTANCE) {
-          //   console.log("You're ahead of the ghost, keep up the pace!")
-          // }
-          // //
-          // else if (this.state.GHOST_DISTANCE == this.state.PLAYER_DISTANCE) {
-          //   console.log("You're tied with the ghost, time to pick up the pace!")
-          // }
-          // //
-          // else {
-          //   console.log("You're behind the ghost, what a spooooooky place to be!")
-          // }
+          if (this.state.GHOST_DISTANCE < this.state.PLAYER_DISTANCE) {
+            console.log("You're ahead of the ghost, keep up the pace!")
+          }
+          //
+          else if (this.state.GHOST_DISTANCE == this.state.PLAYER_DISTANCE) {
+            console.log("You're tied with the ghost, time to pick up the pace!")
+          }
+          //
+          else {
+            console.log("You're behind the ghost, what a spooooooky place to be!")
+          }
 
         });
     }, 20000);
