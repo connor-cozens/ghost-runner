@@ -48,7 +48,7 @@ app.post('/create-user', function(req, res){
     })
 })
 
-app.get('/verify-user', function(req, res){
+app.post('/verify-user', function(req, res){
     var data = req.body
     console.log(data);
     MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
