@@ -159,26 +159,26 @@ export default class MapScreen extends React.Component {
         style={styles.mapStyle}
       />        
       {/* Menu Item 1 */}
-        <Text 
+        <TouchableOpacity><Text 
           onPress = { () => this.navigation.navigate('Ghost')} 
           style={styles.ghost}
           >Ghost
-        </Text>
+        </Text></TouchableOpacity>
       {/* Menu Item 2 */}
       {global.signedIn ? (null) : 
-      (<Text 
+      (<TouchableOpacity><Text 
         onPress = { () => this.navigation.navigate('Login')} 
         style={styles.login}
         >Login
-      </Text>)}
+      </Text></TouchableOpacity>)}
       {/* Menu Item 3 */}
       { global.signedIn ?
-      (<Text 
+      (<TouchableOpacity><Text 
         onPress = { () => this.navigation.navigate('Profile')} 
         style={styles.profile}
         >Profile
       </Text>
-      ) : (null)}
+      </TouchableOpacity>) : (null)}
       {/* Player Progress Bar */}
       <View style={styles.progress1}>
         <ProgressBar icon="run" progress={this.state.PLAYER_PROGRESS}/>
@@ -214,12 +214,14 @@ const styles = StyleSheet.create({
     bottom: 100,
     fontWeight: 'bold',
     paddingLeft: 300,
+    backgroundColor: "#465881"
   },
   profile: {
     position: "absolute",
     bottom: 150,
     fontWeight: 'bold',
     paddingLeft: 300,
+    backgroundColor: "#465881"
   },
   GhostPickerButton: {
     position: "absolute",
