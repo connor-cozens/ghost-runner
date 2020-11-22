@@ -1,10 +1,11 @@
 import * as React from 'react';
 import MapView from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions, Button } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Button} from 'react-native';
 import { GoogleMap, DistanceMatrixService } from "@react-google-maps/api";
 
 import * as Location from 'expo-location'
 import ProgressBar from './../../components/ProgressBar.js';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default class MapScreen extends React.Component {
   constructor({ navigation }){
@@ -139,11 +140,11 @@ export default class MapScreen extends React.Component {
         style={styles.mapStyle}
       />        
       {/* Menu Item 1 */}
-      <Text 
-        onPress = { () => this.navigation.navigate('Ghost')} 
-        style={styles.ghost}
-        >Ghost
-      </Text>
+        <Text 
+          onPress = { () => this.navigation.navigate('Ghost')} 
+          style={styles.ghost}
+          >Ghost
+        </Text>
       {/* Menu Item 2 */}
       {global.signedIn ? (null) : 
       (<Text 
