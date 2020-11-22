@@ -53,6 +53,7 @@ export default class LoginScreen extends React.Component<{}, {username: string, 
     render() {
         return (
             <View style={styles.container} >
+                <Image source = {require('../../assets/images/126955649_1094859597631642_2296528066949713906_n.png')} style={styles.ghostImage}/>
                 <Text style={styles.logo}>Ghost Runner</Text>
 
                 <View style={styles.inputView} >
@@ -133,6 +134,12 @@ const styles = StyleSheet.create({
         marginTop: 40,
         marginBottom: 10
     },
+    
+    ghostImage: {
+        width: 100,
+        height: 100,
+        //marginBottom: 10
+    }
 });
 
 
