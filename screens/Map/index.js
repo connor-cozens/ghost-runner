@@ -150,13 +150,14 @@ export default class MapScreen extends React.Component {
       this.setState({
         PLAYER_DISTANCE: parseInt(parseInt(this.state.PLAYER_DISTANCE) + parseInt(this.state.PLAYER_CURRENT_DISTANCE) + 500),
       })
-      // console.log("Player Distance is now: ", this.state.PLAYER_DISTANCE)
+      console.log("Player Distance is now: ", this.state.PLAYER_DISTANCE)
       this.state.PLAYER_DISTANCES.push(this.state.PLAYER_DISTANCE)
-      // console.log("Player Distances is now: ", this.state.PLAYER_DISTANCES)
+      console.log("Player Distances is now: ", this.state.PLAYER_DISTANCES)
       const ghost_index = this.state.TIME_ELAPSED / 20
       this.state.GHOST_DISTANCE = this.state.GHOST_DISTANCES[ghost_index]
 
       this.state.PLAYER_PROGRESS = parseInt((this.state.PLAYER_DISTANCE / this.state.RACE_LENGTH) * 100)
+      console.log("Player Progress Value is now: ", this.state.PLAYER_PROGRESS)
       this.state.GHOST_PROGRESS = parseInt((this.state.GHOST_DISTANCE / this.state.RACE_LENGTH) * 100)
 
       if (this.state.GHOST_DISTANCE < this.state.PLAYER_DISTANCE) {
@@ -170,7 +171,13 @@ export default class MapScreen extends React.Component {
       else {
         console.log("You're behind the ghost, what a spooooooky place to be!")
       }
-      if (this.state.PLAYER_DISTANCE >= this.state.RACE_LENGTH) {
+      // Ghost Win Condition
+      if (this.state.GHOST_DISTANCE >= this.state.RACE_LENGTH) {
+        clearInterval(this.state.interval)
+        console.log("The ghost beat you! Try again next time!")
+      }
+      // Player Win Condition
+      else if (this.state.PLAYER_DISTANCE >= this.state.RACE_LENGTH) {
         clearInterval(this.state.interval)
         console.log("You finished your run, good job!!")
         // 
@@ -349,13 +356,13 @@ const styles = StyleSheet.create({
   },
   distanceDisplay: {
     position: "absolute",
-    bottom: 150,
+    bottom: 100,
     left: 5,
     fontWeight: 'bold'
   },
   timeDisplay: {
     position: "absolute",
-    bottom: 165,
+    bottom: 75,
     left: 5,
     fontWeight: 'bold'
   }

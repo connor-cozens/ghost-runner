@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const { width:WIDTH, height:HEIGHT } = Dimensions.get('window');
-const BAR_MARGIN = 30;
+const BAR_MARGIN = 0;
 const RATIO = (WIDTH - (BAR_MARGIN * 2)) / 110;
 
 const styles = StyleSheet.create({
