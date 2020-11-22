@@ -295,21 +295,25 @@ export default class MapScreen extends React.Component {
       </Text>
       ) : (null)}
       {/* Player Progress Bar */}
-      <View style={styles.progress1}>
+      { global.race_on ? 
+      (<View style={styles.progress1}>
         <ProgressBar icon="run" progress={this.state.PLAYER_PROGRESS}/>
-      </View>
+      </View>) : (null)}
       {/* Ghost Progress Bar */}
-      <View style={styles.progress2}>
+      {global.race_on ? 
+      (<View style={styles.progress2}>
         <ProgressBar icon="ghost" progress={this.state.GHOST_PROGRESS}/>
-      </View>
-      <Text 
+      </View>) : (null)}
+      {global.race_on ?
+      (<Text 
         style={styles.distanceDisplay}
         > Distance Travelled: { this.state.PLAYER_DISTANCE }
-      </Text>
+      </Text>) : (null)}
+      {global.race_on ? (
       <Text 
         style={styles.timeDisplay}
         > Time Elapsed { this.state.TIME_ELAPSED }
-      </Text>
+      </Text> ) : (null)}
     </View>
     )
   }
