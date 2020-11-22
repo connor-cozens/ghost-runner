@@ -95,6 +95,7 @@ app.post('/friendly-ghost-list', function(req, res){
     proj["projection"][field_name] = 1;
     proj["projection"][username] = 1;
     console.log(query);
+    console.log(proj);
     MongoClient.connect("mongodb://127.0.0.1:27017", function(error, client){
         var db = client.db('ghost_db');
         db.collection('users').find(query, proj).toArray( function (error, result){
