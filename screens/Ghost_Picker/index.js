@@ -1,22 +1,17 @@
 import * as React from 'react';
 import { StyleSheet, TextInput, View, TouchableOpacity, Text } from 'react-native';
- 
-export default class LoginScreen extends React.Component {
-    state = {
-        email: "",
-        password: ""
-    }
+
+export default class GhostPickerScreen extends React.Component {
     render() {
         return (
             <View style={styles.container} >
                 <Text style={styles.logo}>Ghost Runner</Text>
 
-
-                <TouchableOpacity style={styles.inputView}>
+                <TouchableOpacity style={styles.inputView} >
                     <Text style={styles.login}>Race Your Ghost</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.inputView}>
+                <TouchableOpacity style={styles.inputView} onPress = {() => global.navigation.navigate('RaceLength')} >
                     <Text style={styles.login}>Race A Friendly Ghost</Text>
                 </TouchableOpacity>
 
